@@ -15,6 +15,7 @@ function App() {
   const [presupuesto, setPresupuesto] = useState(
     Number(localStorage.getItem('presupuesto')) ?? 0
   )
+
   const [isValidPresupuesto, setIsValidPresupuesto] = useState(false)
 
   const [modal, setModal] = useState(false)
@@ -24,7 +25,6 @@ function App() {
 
   const [filtro, setFiltro] = useState('')
   const [gastosFiltrados, setGastosFiltrados] = useState([])
-
 
   useEffect(() => {
     if( Object.keys(gastoEditar).length > 0 ) {
@@ -59,6 +59,8 @@ function App() {
     }
   }, []);
   
+
+
   const handleNuevoGasto = () => {
     setModal(true)
     setGastoEditar({})
@@ -69,8 +71,6 @@ function App() {
   }
 
   const guardarGasto = gasto => {
-    gasto.id = generarId();  ////////
-    setGastos([...gastos, gasto])  ////////
     if(gasto.id) {
       // Actualizar
       const gastosActualizados = gastos.map( gastoState => gastoState.id === gasto.id ? gasto : gastoState)
@@ -94,51 +94,51 @@ function App() {
   }
 
   return (
-    <div className={modal ? 'fijar' : '' }>
-      <Header
-        gastos={gastos}
-        setGastos={setGastos}
-        presupuesto={presupuesto}
-        setPresupuesto={setPresupuesto}
-        isValidPresupuesto={isValidPresupuesto}
-        setIsValidPresupuesto={setIsValidPresupuesto}
-      />
+      <div className={modal ? 'fijar' : '' }>
+        <Header 
+            gastos={gastos}
+            setGastos={setGastos}
+            presupuesto={presupuesto}
+            setPresupuesto={setPresupuesto}
+            isValidPresupuesto={isValidPresupuesto}
+            setIsValidPresupuesto={setIsValidPresupuesto}
+        />
 
-      {isValidPresupuesto && (
-        <>
-          <main>
-            <Filtros 
-              filtro={filtro}
-              setFiltro={setFiltro}
-            />
-            <ListadoGastos 
-                gastos={gastos}
-                setGastoEditar={setGastoEditar}
-                eliminarGasto={eliminarGasto}
+        {isValidPresupuesto && (
+          <>
+            <main>
+              <Filtros 
                 filtro={filtro}
-                gastosFiltrados={gastosFiltrados}
-            />
-          </main>
-          <div className="nuevo-gasto">
-              <img 
-                  src={IconoNuevoGasto}
-                  alt="icono nuevo gasto"
-                  onClick={handleNuevoGasto}
+                setFiltro={setFiltro}
               />
-          </div>
-        </>
-      )}
-
-      {modal && <Modal 
-                  setModal={setModal} 
-                  animarModal={animarModal}
-                  setAnimarModal={setAnimarModal}
-                  guardarGasto={guardarGasto}
-                  gastoEditar={gastoEditar}
+              <ListadoGastos 
+                  gastos={gastos}
                   setGastoEditar={setGastoEditar}
-                />}
+                  eliminarGasto={eliminarGasto}
+                  filtro={filtro}
+                  gastosFiltrados={gastosFiltrados}
+              />
+            </main>
+            <div className="nuevo-gasto">
+                <img 
+                    src={IconoNuevoGasto}
+                    alt="icono nuevo gasto"
+                    onClick={handleNuevoGasto}
+                />
+            </div>
+          </>
+        )}
 
-    </div>
+        {modal && <Modal 
+                    setModal={setModal}
+                    animarModal={animarModal}
+                    setAnimarModal={setAnimarModal}
+                    guardarGasto={guardarGasto}
+                    gastoEditar={gastoEditar}
+                    setGastoEditar={setGastoEditar}
+                  />}
+
+      </div>
   )
 }
 
